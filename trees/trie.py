@@ -21,31 +21,26 @@ class TrieNode:
         # Is this the end of a valid word (False by default)
         self.word = False
 
-    def visualize(self, level=0, prefix=""):
+    def visualize(self, prefix="", is_tail=True):
         """
         Recursively visualizes the Trie node and its children with indentation and lines.
 
         Args:
-            level (int): The current level of the node in the Trie (used for indentation).
             prefix (str): The prefix string used for visualizing connections.
+            is_tail (bool): Indicates if this node is the last child of its parent.
         """
         # Print the current node's character and word status with indentation and prefix
-        if self.char:
-            if self.word:
-                print(f"{prefix}{self.char}-EOW")
-            else:
-                print(f"{prefix}{self.char}")
+        if self.char is not None:
+            node_representation = f"{self.char}-*" if self.word else self.char
+            print(f"{prefix}{'└── ' if is_tail else '├── '}{node_representation}")
 
         # Prepare the prefix for child nodes
-        new_prefix = prefix + ("|  " if prefix else "")
+        new_prefix = prefix + ("  " if is_tail else "│ ")
         child_count = len(self.children)
 
         # Recursively visualize each child node with lines
         for idx, child in enumerate(self.children.values()):
-            if idx == child_count - 1:  # Last child
-                child.visualize(level + 1, new_prefix[:-3] + "   +--")
-            else:  # Not the last child
-                child.visualize(level + 1, new_prefix[:-3] + "|  +--")
+            child.visualize(new_prefix, idx == child_count - 1)
 
 
 class Trie:
@@ -126,6 +121,9 @@ class Trie:
         return True
 
     def visualize(self):
+        """
+        Visualizes the entire Trie by starting from the root node.
+        """
         self.root.visualize()
 
 
@@ -149,7 +147,7 @@ trie.insert("ape")
 
 
 # Auto-complete example
-words = ["apple", "app", "apricot", "banana", "bat", "batch", "batman"]
+words = ["apple", "app", "apricot", "banana", "bat", "batch", "batman", "apricne"]
 for word in words:
     trie.insert(word)
 
