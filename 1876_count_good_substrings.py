@@ -46,25 +46,9 @@ def countGoodSubStrings(s: str):
     for idx in range(len(s)):
         # Sliding Window: Collect substring across the window
         substring = s[idx : idx + window]
-        # Initialize a data structure for storing the frequency
-        # of characters in the subset
-        count_set = set()
 
-        # Work with only three characters in the window
-        if len(substring) < 3:
-            break
-
-        # Iterate through the substring
-        for ichar in substring:
-            # Check if the inner character is in the DS or..
-            if ichar not in count_set:
-                count_set.add(ichar)
-            # If an occurence is found, this substring is not considered "good"
-            else:
-                # Of to collect the next substring from the window
-                break
-        # A "good" substring was found if no characters occurred more than once
-        else:
+        # Check if all characters in the substring are unique using a set
+        if len(set(substring)) == window:
             good_sub_string += 1
 
     # Return the number of "good" substrings found
