@@ -44,21 +44,32 @@ nums is sorted in ascending order.
 from typing import List
 
 
-def summaryRanges(nums: List[int]) -> List[str]:
-    summary: List[str] = []
+# pylint: disable=missing-function-docstring,missing-class-docstring
+class Solution:
+    # pylint: disable=invalid-name
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        summary: List[str] = []
 
-    start = nums[0]
-    for i in range(len(nums) - 1):
-        # print(i, nums[i])
-        # print(nums[i])
-        if nums[i] + 1 != nums[i + 1]:
-            if start != nums[i]:
-                summary.append(f"{start}->{nums[i]}")
-            else:
-                summary.append(f"{nums[i]}")
-            start = nums[i]
-            # print(i, nums[i])
-    return summary
+        if not nums:
+            return summary
+
+        start = nums[0]
+        # pylint: disable=consider-using-enumerate
+        for i in range(len(nums)):
+            try:
+                if nums[i] + 1 != nums[i + 1]:
+                    if start != nums[i]:
+                        summary.append(f"{start}->{nums[i]}")
+                    else:
+                        summary.append(f"{nums[i]}")
+                    i += 1
+                    start = nums[i]
+            except IndexError:
+                if start != nums[i]:
+                    summary.append(f"{start}->{nums[i]}")
+                else:
+                    summary.append(f"{nums[i]}")
+        return summary
 
 
-print(summaryRanges([0, 2, 3, 4, 6, 8, 9]))
+print(Solution().summaryRanges([0, 1, 2, 4, 5, 7]))
